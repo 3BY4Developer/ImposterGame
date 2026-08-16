@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
-import { FLAVOURS } from '../data/flavours'
+import { FLAVOURS, wordHint } from '../data/flavours'
+import { loadCustomWords } from './storage'
 import { sfx } from './sound'
 
 export const PHASES = {
@@ -42,8 +43,9 @@ export function useGame() {
 
   const [settings, setSettings] = useState({
     flavourId: 'english',
+    gameMode: 'classic', // 'classic' | 'dark'
     imposterCount: 1,
-    categoryIds: ['food', 'bollywood', 'street'],
+    categoryIds: ['ajay-list'],
     timer: { enabled: true, minutes: 3 },
     imposterHint: 'none',
   })
@@ -94,11 +96,31 @@ export function useGame() {
       imposterIds.push(players[imposterPool.splice(pick, 1)[0]].id)
     }
 
-    const cat = settings.categoryIds[Math.floor(Math.random() * settings.categoryIds.length)]
-    const category = flavour.categories.find((c) => c.id === cat) ?? flavour.categories[0]
+    const customWords = loadCustomWords()
+    const playable = [
+      ...flavour.categories.filter((c) => c.words.length >= 3),
+      ...(customWords.length >= 3 ? [{ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords }] : []),
+    ]
+    const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
+    const category = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
     const word = category.words[Math.floor(Math.random() * category.words.length)]
+    const hint = wordHint(word)
 
-    setRound({ word, category, imposterIds: new Set(imposterIds), order })
+    let imposterWord = null
+    if (settings.gameMode === 'dark') {
+      const others = category.words.filter((w) => w !== word)
+      imposterWord = others[Math.floor(Math.random() * others.length)]
+    }
+
+    setRound({
+      word,
+      hint,
+      imposterWord,
+      dark: settings.gameMode === 'dark',
+      category,
+      imposterIds: new Set(imposterIds),
+      order,
+    })
     setRevealIndex(0)
     setAccusedId(null)
     sfx.fanfare()

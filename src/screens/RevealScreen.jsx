@@ -1,12 +1,20 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { colorFor, avatarFor } from '../game/useGame'
+import { wordText } from '../data/flavours'
 import { Button } from '../components/ui'
 import { sfx } from '../game/sound'
 
 export default function RevealScreen({ game }) {
   const { round, players, revealIndex, settings, terms, finishReveal } = game
   const [revealed, setRevealed] = useState(false)
+
+  const imposterHint =
+    settings.imposterHint === 'word'
+      ? round.hint
+      : settings.imposterHint === 'category'
+        ? `${round.category.emoji} ${round.category.name}`
+        : null
 
   const idx = round.order[revealIndex]
   const player = players[idx]
@@ -23,7 +31,7 @@ export default function RevealScreen({ game }) {
   const onFlip = () => {
     if (revealed) return
     setRevealed(true)
-    if (isImposter) sfx.imposter()
+    if (isImposter && !round.dark) sfx.imposter()
     else sfx.reveal()
   }
 
@@ -93,7 +101,7 @@ export default function RevealScreen({ game }) {
                   className="absolute inset-0 rounded-3xl border shadow-card"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                 >
-                  {isImposter ? (
+                  {isImposter && !round.dark ? (
                     <div className="grid h-full w-full place-items-center rounded-3xl bg-gradient-to-br from-rose-700 via-rose-900 to-night-900 border-rose-400/30 text-center p-6">
                       <div>
                         <div className="mb-3 text-6xl">👻</div>
@@ -102,9 +110,9 @@ export default function RevealScreen({ game }) {
                         </p>
                         <p className="mt-2 text-white/70">{terms.fakeIt}</p>
                         <p className="mt-1 text-sm text-white/50">{terms.youDontKnow}</p>
-                        {settings.imposterHint === 'category' && (
+                        {settings.imposterHint !== 'none' && imposterHint && (
                           <div className="mt-4 inline-block rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gold-300">
-                            🔎 {terms.hint}: {round.category.emoji} {round.category.name}
+                            🔎 {terms.hint}: {imposterHint}
                           </div>
                         )}
                       </div>
@@ -114,10 +122,10 @@ export default function RevealScreen({ game }) {
                       <div>
                         <div className="mb-3 text-6xl">{round.category.emoji}</div>
                         <p className="text-sm font-bold uppercase tracking-[0.2em] text-night-900/70">
-                          {terms.secretWord}
+                          {round.dark ? terms.yourWord : terms.secretWord}
                         </p>
                         <p className="font-display mt-2 break-words text-4xl font-bold leading-tight text-night-950">
-                          {round.word}
+                          {wordText(isImposter ? round.imposterWord : round.word)}
                         </p>
                       </div>
                     </div>

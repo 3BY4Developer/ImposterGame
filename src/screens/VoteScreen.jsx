@@ -20,7 +20,15 @@ export default function VoteScreen({ game }) {
       >
         <h1 className="font-display text-4xl font-bold text-white">🕵️ Who is it?</h1>
         <p className="mx-auto mt-2 max-w-xs text-white/70">
-          Discuss the clues, then accuse who you think is the {terms.imposter.toLowerCase()}.
+          {round.dark ? (
+            <>
+              Discuss the clues, then vote on who had the <b className="text-white">different word</b>.
+            </>
+          ) : (
+            <>
+              Discuss the clues, then accuse who you think is the {terms.imposter.toLowerCase()}.
+            </>
+          )}
         </p>
 
         <div className="mt-8 flex flex-col gap-2">

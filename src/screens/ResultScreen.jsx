@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { colorFor, avatarFor } from '../game/useGame'
+import { wordText } from '../data/flavours'
 import { Button } from '../components/ui'
 import { sfx } from '../game/sound'
 
@@ -43,7 +44,7 @@ export default function ResultScreen({ game }) {
       >
         <div className="text-7xl">{caught ? '🎯' : '😎'}</div>
         <h1 className={`font-display mt-3 text-4xl font-bold ${caught ? 'text-saffron-400' : 'text-rose-400'}`}>
-          {caught ? terms.caught + '!' : `${terms.imposter} got away!`}
+          {caught ? terms.caughtTitle : terms.gotAwayTitle}
         </h1>
         <p className="mx-auto mt-2 max-w-xs text-white/70">
           {caught ? (
@@ -66,15 +67,23 @@ export default function ResultScreen({ game }) {
           style={{ perspective: 1000 }}
         >
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50">
-            The word was
+            {round.dark ? "Everyone's word was" : 'The word was'}
           </p>
           <div className="font-display mt-1 text-5xl font-bold leading-tight text-gold-300">
-            {round.category.emoji} {round.word}
+            {round.category.emoji} {wordText(round.word)}
           </div>
-          <p className="mt-2 text-sm text-white/50">
-            Category: {round.category.name} · {players.length} players · {imposters.length}{' '}
-            {imposters.length === 1 ? terms.imposter : terms.imposters}
-          </p>
+          {round.dark && (
+            <div className="mt-3 inline-block rounded-full bg-rose-500/15 border border-rose-400/40 px-4 py-2 text-sm font-semibold text-rose-300">
+              😈 but {imposters.map((p) => p.name).join(' & ')} saw&nbsp;
+              <b className="text-white">{wordText(round.imposterWord)}</b>
+            </div>
+          )}
+          {!round.dark && (
+            <p className="mt-2 text-sm text-white/50">
+              Category: {round.category.name} · {players.length} players · {imposters.length}{' '}
+              {imposters.length === 1 ? terms.imposter : terms.imposters}
+            </p>
+          )}
         </motion.div>
 
         <div className="mt-6 flex flex-col gap-2">

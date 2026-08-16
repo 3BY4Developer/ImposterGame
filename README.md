@@ -9,8 +9,10 @@ Built with **Vite + React + Tailwind CSS v4 + Framer Motion**. No backend. 100% 
 ## Features
 
 - 🎂 Full setup: players (3–16), 1–2 imposters, category picker, custom words
+- 🗡️ **Dark mode** — everyone gets a word, but the imposter's word is *different* —
+  and even they don't know they're the imposter. Spot the mismatch!
+- 🕵️ Classic mode with imposter hints (None / Category / word-specific hint)
 - ⏰ **Optional timer** — toggle it off and play at your own pace
-- 👀 Imposter hint setting (None / Category name)
 - 🃏 Flip-card reveal with sounds (WebAudio, no assets needed)
 - 🧨 Confetti + verdict screen when the imposter is caught
 - 🌟 **Flavour system** — a flavour bundles game terms + word categories.
@@ -52,21 +54,16 @@ categories: [
 
 Players can also add their own words in-app (🌟 *My Words*), no code needed.
 
-## Adding a "telugu" flavour later
+## Flavours — select, change, add
 
-A flavour just needs the same shape — English UI stays, words/terms swap:
+The app UI is **English only**. Game words are also in English letters (transliterated) — e.g. "Sankranti", "Vijayawada", "Garelu" — nothing in Telugu script.
 
-```js
-{
-  id: 'telugu',
-  label: 'తెలుగు',
-  emoji: '🇮🇳',
-  terms: { ...englishTerms, title: 'దొంగను పట్టేయండి', imposter: 'Donga' },
-  categories: [ { id: 'food', name: 'వంటకాలు', emoji: '🍛', words: ['బిర్యాని', 'దోస', ...] } ],
-}
-```
+Rename categories, tweak words, or add a new flavour: everything lives in `src/data/flavours.js`.
 
-Add it to the `FLAVOURS` array and the flavour picker appears automatically.
+- One flavour shipped: `english`, packed with desi categories (Indian food, Bollywood, **Tollywood**, cricket, festivals, mythology, **Ajay List**, street life, and more).
+- The `telugu` flavour ships with the same fun cards (title "Donga ni kanipettu", imposter "Donga", "Abba!!...Nuvve babu ippudu Donga") and Telugu word-packs in English letters — including its own **Ajay List**.
+- **Ajay List** is pre-selected as the only default category in both flavours.
+- A separate "Telugu" word-pack flavour would be identical in shape (`terms` + `categories`, words transliterated in English) — append it to the `FLAVOURS` array and the picker chip appears automatically.
 
 ## Scripts
 

@@ -45,8 +45,18 @@ export default function RoundScreen({ game }) {
 
         <h1 className="font-display text-4xl font-bold text-white">🤫 Keep it a secret!</h1>
         <p className="mx-auto mt-3 max-w-xs text-white/70">
-          Take turns — each player says <span className="font-semibold text-gold-300">ONE clue word</span>{' '}
-          about the secret word. The {terms.imposter.toLowerCase()} fakes it:
+          {round.dark ? (
+            <>
+              Everyone got a word — but <span className="font-semibold text-gold-300">one player's word is different</span>.
+              Take turns saying <span className="font-semibold text-gold-300">ONE clue word</span> about yours,
+              and spot the odd one out:
+            </>
+          ) : (
+            <>
+              Take turns — each player says <span className="font-semibold text-gold-300">ONE clue word</span>{' '}
+              about the secret word. The {terms.imposter.toLowerCase()} fakes it:
+            </>
+          )}
         </p>
 
         <div
@@ -78,7 +88,9 @@ export default function RoundScreen({ game }) {
         </div>
 
         <p className="mt-6 text-sm text-white/50">
-          Think you've found the {terms.imposter.toLowerCase()}? Close the round and vote.
+          {round.dark
+            ? "Spotted a clue that didn't fit? Close the round and vote on who had the different word."
+            : `Think you've found the ${terms.imposter.toLowerCase()}? Close the round and vote.`}
         </p>
 
         <Button className="mt-4 w-full py-4 text-xl" onClick={closeRound}>

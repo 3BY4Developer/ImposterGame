@@ -1,31 +1,46 @@
 // ============================================================
 //  FLAVOURS
 //  A flavour wraps the game vocabulary for a region/dialect.
+//  The app UI is ALWAYS English — a flavour only changes the
+//  words and a handful of game terms.
 //
-//  The "english" flavour is the default. The UI stays in English,
-//  but every game term + category/word set lives in `terms` and
-//  `categories` so you can drop in a "telugu" (or any) flavour
-//  later by copying this shape and translating the values:
+//  To add a flavour (e.g. a Hinglish/Hyderabadi pack), copy the
+//  shape below and translate the categories/terms, then append
+//  it to the FLAVOURS array — the flavour picker appears
+//  automatically on the setup screen:
 //
 //  {
-//    id: "telugu",
-//    label: "తెలుగు",
-//    emoji: "🇮🇳",
-//    terms: { imposter: "Donga", ... },
-//    categories: [ { id, name, emoji, words: [...] } ]  // Telugu words
+//    id: "my-flavour",
+//    label: "My Flavour",
+//    emoji: "🎉",
+//    terms: { ...englishTerms, imposter: "Donga" },
+//    categories: [ { id, name, emoji, words: [...] } ]
 //  }
 //
-//  Then just add it to the FLAVOURS array below.
+//  Keep words in English letters (transliterated) — e.g.
+//  "Sankranti", not "సంక్రాంతి".
+//
+//  WORD HINTS (advanced hint for the imposter):
+//  Any word can carry a private hint that the imposter may see.
+//  Use the { w, h } form — plain strings have no hint:
+//
+//  words: ['Biryani', { w: 'Varanasi', h: 'babu' }, 'Dosa']
 // ============================================================
+
+export const wordText = (w) => (typeof w === 'string' ? w : w.w)
+export const wordHint = (w) => (typeof w === 'string' ? null : w.h)
 
 const englishTerms = {
   title: 'Guess the Imposter',
   imposter: 'Imposter',
   imposters: 'Imposters',
   secretWord: 'Secret Word',
+  yourWord: 'Your word',
   hint: 'Hint',
   caught: 'Caught',
   notCaught: 'Got away',
+  caughtTitle: 'Caught!',
+  gotAwayTitle: 'Imposter got away!',
   startGame: 'Start Game',
   passPhone: 'Pass the phone',
   tapToReveal: 'Tap to reveal',
@@ -50,6 +65,7 @@ export const FLAVOURS = [
           'Biryani', 'Dosa', 'Vada Pav', 'Samosa', 'Pav Bhaji', 'Gulab Jamun',
           'Chole Bhature', 'Pani Puri', 'Litti Chokha', 'Rajma Chawal',
           'Paneer Tikka', 'Masala Dosa', 'Jalebi', 'Kathi Roll', 'Dhokla',
+          'Pulihora', 'Upma', 'Payasam', 'Ariselu', 'Garelu', 'Chakkili', 'Medu Vada',
         ],
       },
       {
@@ -59,6 +75,7 @@ export const FLAVOURS = [
         words: [
           'Auto Rickshaw', 'Chaiwala', 'Dabbawala', 'Street Barber', 'Paaniwala',
           'Cobbler', 'Lassi Shop', 'Hawker', 'Rikshaw', 'Mehndi Artist',
+          'Chai Hotel', 'Idli Hotel', 'Mirchi Bajji', 'Gazulu Bazaar', 'Pan Shop',
         ],
       },
       {
@@ -107,7 +124,8 @@ export const FLAVOURS = [
         words: [
           'Diwali', 'Holi', 'Eid', 'Pongal', 'Navratri', 'Onam',
           'Raksha Bandhan', 'Ganesh Chaturthi', 'Durga Puja', 'Dussehra',
-          'Christmas', 'Lohri',
+          'Christmas', 'Lohri', 'Sankranti', 'Ugadi', 'Dasara', 'Shivaratri',
+          'Vinayaka Chavithi',
         ],
       },
       {
@@ -127,6 +145,8 @@ export const FLAVOURS = [
         words: [
           'Mumbai', 'Hyderabad', 'Delhi', 'Bengaluru', 'Kolkata', 'Chennai',
           'Jaipur', 'Kerala', 'Goa', 'Punjab', 'Kashmir', 'Varanasi',
+          'Vijayawada', 'Visakhapatnam', 'Tirupati', 'Warangal', 'Guntur',
+          'Kakinada', 'Nellore',
         ],
       },
       {
@@ -181,6 +201,123 @@ export const FLAVOURS = [
         words: [
           'Rajinikanth', 'Kolaveri Di', 'Superstar', 'Kuppamma', 'Master',
           'Kamal Haasan', 'Vijay', 'Amaran', 'Mersal', 'Kabali',
+        ],
+      },
+      {
+        id: 'tollywood',
+        name: 'Tollywood',
+        emoji: '🎭',
+        words: [
+          'RRR', 'Baahubali', 'Pushpa', 'Arjun Reddy', 'Geetha Govindam',
+          'Magadheera', 'Eega', 'Jersey', 'Ala Vaikunthapurramuloo',
+          'Gabbar Singh', 'Attarintiki Daaredi', 'Rangasthalam', 'Srimanthudu',
+          'Pawan Kalyan', 'Jr NTR', 'Allu Arjun', 'Mahesh Babu', 'SS Rajamouli',
+        ],
+      },
+      {
+        id: 'ajay-list',
+        name: 'Ajay List',
+        emoji: '🎯',
+        words: [
+          { w: 'Varanasi', h: 'babu' },
+          { w: 'Ramayan', h: 'cinema doubt eh' },
+          { w: 'Babu', h: 'star' },
+          { w: 'bhai', h: 'Cheppanu' },
+          { w: 'buddodu', h: 'daddy' },
+          { w: 'Maxi', h: 'nasa' },
+          { w: 'Maggi', h: '2 min' },
+          { w: 'Masqati', h: 'icecream' },
+          { w: 'Bawarchi', h: 'sandhya' },
+          { w: 'Raja prince', h: 'mountain' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'telugu',
+    label: 'Telugu',
+    emoji: '🛕',
+    terms: {
+      ...englishTerms,
+      title: 'Donga ni kanipettu',
+      imposter: 'Donga',
+      imposters: 'Dongalu',
+      youAreTheImposter: 'Abba!!...Nuvve babu ippudu Donga',
+      fakeIt: 'Natinchu inka... dorikithe saave neeku!',
+      startGame: 'Aadandi Ra Rey!',
+      caughtTitle: 'Donga dorikadu!',
+      gotAwayTitle: 'Ee Donga, chikkadu... dorakadu!',
+    },
+    categories: [
+      {
+        id: 'tl-tiffins',
+        name: 'Telugu Tiffins',
+        emoji: '🍛',
+        words: [
+          'Idli', 'Dosa', 'Vada', 'Pesarattu', 'Upma', 'Pulihora',
+          'Gongura Pachadi', 'Bobbatlu', 'Payasam', 'Garelu',
+        ],
+      },
+      {
+        id: 'tl-dialogues',
+        name: 'Telugu Dialogues',
+        emoji: '🗣️',
+        words: [
+          'Arey Babu', 'Nuvvu Naaku Nachavu', 'Raa Raa', 'Em Ayyindhi',
+          'Ekkada Ekkada', 'Cheppanu', 'Vayyo', 'Asalu', 'Sarele', 'Babu Garu',
+        ],
+      },
+      {
+        id: 'tl-festivals',
+        name: 'Telugu Festivals',
+        emoji: '🎉',
+        words: [
+          'Sankranti', 'Ugadi', 'Dasara', 'Shivaratri', 'Vinayaka Chavithi',
+          'Deepavali', 'Holi', 'Rakhi',
+        ],
+      },
+      {
+        id: 'tl-cities',
+        name: 'Telugu Cities',
+        emoji: '🗺️',
+        words: [
+          'Hyderabad', 'Visakhapatnam', 'Vijayawada', 'Tirupati', 'Warangal',
+          'Guntur', 'Kakinada', 'Nellore', 'Anantapur', 'Kurnool',
+        ],
+      },
+      {
+        id: 'tl-street',
+        name: 'Telugu Street',
+        emoji: '🛺',
+        words: [
+          'Auto', 'Chai Hotel', 'Idli Hotel', 'Mirchi Bajji', 'Pani Puri',
+          'Gazulu Bazaar', 'Poo Market', 'Pan Shop',
+        ],
+      },
+      {
+        id: 'tl-cricket',
+        name: 'Telugu Cricket',
+        emoji: '🏏',
+        words: [
+          'Dhoni', 'Virat Kohli', 'Sachin', 'Rohit Sharma', 'Jadeja',
+          'Bumrah', 'IPL', 'Helicopter Shot', 'Yorker', 'Sixer',
+        ],
+      },
+      {
+        id: 'ajay-list',
+        name: 'Ajay List',
+        emoji: '🎯',
+        words: [
+          { w: 'Varanasi', h: 'babu' },
+          { w: 'Ramayan', h: 'cinema doubt eh' },
+          { w: 'Babu', h: 'star' },
+          { w: 'bhai', h: 'Cheppanu' },
+          { w: 'buddodu', h: 'daddy' },
+          { w: 'Maxi', h: 'nasa' },
+          { w: 'Maggi', h: '2 min' },
+          { w: 'Masqati', h: 'icecream' },
+          { w: 'Bawarchi', h: 'sandhya' },
+          { w: 'Raja prince', h: 'mountain' },
         ],
       },
     ],

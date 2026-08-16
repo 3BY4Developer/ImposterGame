@@ -98,8 +98,22 @@ export default function SetupScreen({ game }) {
 
   const flavour = FLAVOURS.find((f) => f.id === settings.flavourId) ?? FLAVOURS[0]
 
+  const switchFlavour = (id) => {
+    const f = FLAVOURS.find((x) => x.id === id)
+    if (!f || id === settings.flavourId) return
+    const cats = f.categories.filter((c) => c.words.length >= 3).map((c) => c.id)
+    const keep = settings.categoryIds.filter((cid) => cats.includes(cid))
+    sfx.pop()
+    setSettings({
+      ...settings,
+      flavourId: id,
+      categoryIds: keep.length ? keep : cats.slice(0, 3),
+    })
+  }
+
   const allCategories = useMemo(() => {
-    const cats = flavour.categories.filter((c) => c.words.length >= 3)
+    const cats = [{ id: 'random', name: 'Random', emoji: '🎲', words: [] }]
+    cats.push(...flavour.categories.filter((c) => c.words.length >= 3))
     if (customWords.length >= 3) cats.push({ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords })
     return cats
   }, [flavour, customWords])
@@ -130,7 +144,7 @@ export default function SetupScreen({ game }) {
               <Chip
                 key={f.id}
                 active={settings.flavourId === f.id}
-                onClick={() => setSettings({ ...settings, flavourId: f.id })}
+                onClick={() => switchFlavour(f.id)}
               >
                 {f.emoji} {f.label}
               </Chip>
@@ -223,7 +237,8 @@ export default function SetupScreen({ game }) {
             ))}
           </div>
           <p className="mt-4 text-sm text-white/40">
-            The secret word is picked randomly from the selected categories.
+            The secret word is picked from the selected categories. 🎲 <b className="text-white/60">Random</b>{' '}
+            ignores the selection and picks from every category.
           </p>
           <button
             onClick={() => {
@@ -255,19 +270,49 @@ export default function SetupScreen({ game }) {
           </div>
         </Section>
 
+        <Section title="🎮 Game mode">
+          <Segmented
+            options={[
+              { value: 'classic', label: 'Classic' },
+              { value: 'dark', label: 'Dark mode' },
+            ]}
+            value={settings.gameMode}
+            onChange={(v) => setSettings({ ...settings, gameMode: v })}
+          />
+          <p className="mt-2 text-sm text-white/40">
+            {settings.gameMode === 'dark' ? (
+              <>
+                🗡️ <b className="text-white/60">Dark mode:</b> every player gets a word — but the{' '}
+                {terms.imposter.toLowerCase()}'s word is <b className="text-white/60">different</b>, and even
+                they don't know they're the {terms.imposter.toLowerCase()}. Spot the mismatch!
+              </>
+            ) : (
+              <>
+                🕵️ <b className="text-white/60">Classic:</b> everyone shares one secret word, the{' '}
+                {terms.imposter.toLowerCase()} gets none — and knows it.
+              </>
+            )}
+          </p>
+        </Section>
+
+        {settings.gameMode !== 'dark' && (
         <Section title={`👀 ${terms.hint} for ${terms.imposter}`}>
           <Segmented
             options={[
               { value: 'none', label: 'None' },
-              { value: 'category', label: 'Category name' },
+              { value: 'category', label: 'Category' },
+              { value: 'word', label: 'Word hint' },
             ]}
             value={settings.imposterHint}
             onChange={(v) => setSettings({ ...settings, imposterHint: v })}
           />
           <p className="mt-2 text-sm text-white/40">
-            Gives the {terms.imposter.toLowerCase()} a little extra to work with.
+            <b className="text-white/60">Word hint</b> shows the secret private hint for the word (if one
+            exists) — falls back to the category name. Gives the {terms.imposter.toLowerCase()} a
+            little extra to work with.
           </p>
         </Section>
+        )}
 
         <motion.button
           whileTap={{ scale: 0.97 }}

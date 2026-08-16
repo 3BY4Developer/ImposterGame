@@ -37,6 +37,11 @@ export default function App() {
           {game.phase === PHASES.result && <ResultScreen game={game} />}
         </motion.div>
       </AnimatePresence>
+
+      <footer className="no-select relative z-10 pb-5 pt-2 text-center text-sm text-white/40">
+        Made with <span className="inline-block animate-pulse">❤️</span> by{' '}
+        <span className="font-semibold text-white/60">bitbyter</span>
+      </footer>
     </div>
   )
 }
