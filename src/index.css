@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --color-night-950: #0d0717;
+  --color-night-900: #15102a;
+  --color-night-800: #1e1733;
+  --color-night-700: #2b214a;
+
+  --color-saffron-400: #ffb347;
+  --color-saffron-500: #ff9500;
+  --color-saffron-600: #f27600;
+
+  --color-gold-300: #ffd88a;
+  --color-gold-400: #ffc35c;
+
+  --color-mango-400: #ffcc4d;
+
+  --color-viol-400: #a78bfa;
+  --color-viol-500: #8b5cf6;
+
+  --shadow-glow: 0 0 40px -8px rgba(255, 149, 0, 0.55);
+  --shadow-card: 0 22px 60px -20px rgba(0, 0, 0, 0.75);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-night-950);
+  color: #f6f1e8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* Animated aurora blobs behind the app */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora__blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: drift 24s ease-in-out infinite;
+}
+
+.aurora__blob--1 {
+  width: 55vmax;
+  height: 55vmax;
+  left: -12vmax;
+  top: -14vmax;
+  background: radial-gradient(circle at 30% 30%, #7c3aed, transparent 70%);
+}
+
+.aurora__blob--2 {
+  width: 48vmax;
+  height: 48vmax;
+  right: -14vmax;
+  top: 6vmax;
+  background: radial-gradient(circle at 70% 40%, #f27600, transparent 70%);
+  animation-delay: -8s;
+}
+
+.aurora__blob--3 {
+  width: 44vmax;
+  height: 44vmax;
+  left: 22vmax;
+  bottom: -20vmax;
+  background: radial-gradient(circle at 50% 50%, #ec4899, transparent 72%);
+  animation-delay: -16s;
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-5%, 4%) scale(0.95);
+  }
+}
+
+.glass {
+  background: rgba(30, 23, 51, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Little screen shake used by the timer when time is short */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
