@@ -24,7 +24,7 @@
 //  Any word can carry a private hint that the imposter may see.
 //  Use the { w, h } form — plain strings have no hint:
 //
-//  words: ['Biryani', { w: 'Varanasi', h: 'babu' }, 'Dosa']
+//  words: ['Biryani', { w: 'Varanasi', h: 'river' }, 'Dosa']
 // ============================================================
 
 export const wordText = (w) => (typeof w === 'string' ? w : w.w)
@@ -66,6 +66,8 @@ export const FLAVOURS = [
           'Chole Bhature', 'Pani Puri', 'Litti Chokha', 'Rajma Chawal',
           'Paneer Tikka', 'Masala Dosa', 'Jalebi', 'Kathi Roll', 'Dhokla',
           'Paratha', 'Upma', 'Payasam', 'Rasgulla', 'Laddu', 'Poha', 'Medu Vada',
+          'Sambar', 'Curd Rice', 'Kulcha', 'Tandoori Chicken', 'Lassi', 'Bhel Puri',
+          'Chutney', 'Pickle', 'Kheer', 'Halwa',
         ],
       },
       {
@@ -76,6 +78,8 @@ export const FLAVOURS = [
           'Auto Rickshaw', 'Tea Seller', 'Lunch Carrier', 'Street Barber', 'Water Seller',
           'Cobbler', 'Lassi Shop', 'Hawker', 'Rickshaw', 'Mehndi Artist',
           'General Store', 'Corner', 'Cart', 'Tea Stall', 'Betel Shop',
+          'Fruit Stall', 'Flower Vendor', 'Bus Stop', 'Newspaper Stall', 'Shoe Shine',
+          'Cycle Repair', 'Chai Corner', 'Milk Booth', 'Traffic Signal',
         ],
       },
       {
@@ -86,6 +90,8 @@ export const FLAVOURS = [
           'Sholay', 'DDLJ', '3 Idiots', 'Lagaan', 'Baahubali', 'Dangal',
           'Andhadhun', 'Swades', 'Zindagi Na Milegi Dobara', 'Kuch Kuch Hota Hai',
           'Gully Boy', 'Chhichhore', 'Rang De Basanti', 'Queen', 'Gangs of Wasseypur',
+          'Munna Bhai', 'PK', 'Bajrangi Bhaijaan', 'KGF', 'Drishyam',
+          'Pathaan', 'Brahmastra', 'Kantara', 'Jawan',
         ],
       },
       {
@@ -96,6 +102,8 @@ export const FLAVOURS = [
           'Shah Rukh Khan', 'Amitabh Bachchan', 'Aamir Khan', 'Deepika Padukone',
           'Priyanka Chopra', 'Ranbir Kapoor', 'Katrina Kaif', 'Alia Bhatt',
           'Salman Khan', 'Hrithik Roshan', 'Ajay Devgn', 'Anushka Sharma',
+          'Ranveer Singh', 'Shahid Kapoor', 'Varun Dhawan', 'Kareena Kapoor',
+          'Kartik Aaryan', 'Rashmika Mandanna',
         ],
       },
       {
@@ -106,6 +114,8 @@ export const FLAVOURS = [
           'MS Dhoni', 'Sachin Tendulkar', 'Virat Kohli', 'Rohit Sharma',
           'Jasprit Bumrah', 'Ravindra Jadeja', 'KL Rahul', 'Hardik Pandya',
           'Rishabh Pant', 'World Cup Final 2011',
+          'Virender Sehwag', 'Yuvraj Singh', 'Kapil Dev', 'Sunil Gavaskar',
+          'Harbhajan Singh', 'Anil Kumble', 'Suresh Raina', 'Shikhar Dhawan',
         ],
       },
       {
@@ -115,6 +125,8 @@ export const FLAVOURS = [
         words: [
           'Helicopter Shot', 'Yorker', 'Googly', 'Sixer', 'Golden Duck',
           'Powerplay', 'Super Over', 'Century', 'LBW', 'DL Method',
+          'Bouncer', 'Doosra', 'Stumped', 'Run Out', 'No Ball',
+          'Wide', 'Free Hit', 'Appeal',
         ],
       },
       {
@@ -125,7 +137,8 @@ export const FLAVOURS = [
           'Diwali', 'Holi', 'Eid', 'Pongal', 'Navratri', 'Onam',
           'Raksha Bandhan', 'Ganesh Chaturthi', 'Durga Puja', 'Dussehra',
           'Christmas', 'Lohri', 'Sankranti', 'Ugadi', 'Dasara', 'Shivaratri',
-          'Vinayaka Chavithi',
+          'Vinayaka Chavithi', 'Gudi Padwa', 'Baisakhi', 'Thrissur Pooram',
+          'Hornbill Festival', 'Pushkar Fair',
         ],
       },
       {
@@ -136,6 +149,8 @@ export const FLAVOURS = [
           'Taj Mahal', 'Charminar', 'Gateway of India', 'Hawa Mahal',
           'Golden Temple', 'India Gate', 'Red Fort', 'Qutub Minar',
           'Mysore Palace', 'Meenakshi Temple', 'Kumbhalgarh Fort',
+          'Victoria Memorial', 'Lotus Temple', 'Ajanta Caves', 'Jantar Mantar',
+          'Marine Drive', 'Statue of Unity', 'Chennai Central',
         ],
       },
       {
@@ -146,6 +161,7 @@ export const FLAVOURS = [
           'Mumbai', 'Hyderabad', 'Delhi', 'Bengaluru', 'Kolkata', 'Chennai',
           'Jaipur', 'Lucknow', 'Pune', 'Ahmedabad', 'Kerala', 'Goa',
           'Punjab', 'Kashmir', 'Varanasi', 'Amritsar', 'Udaipur', 'Mysore', 'Kochi',
+          'Nagpur', 'Indore', 'Patna', 'Kanpur', 'Surat', 'Bhopal', 'Coimbatore',
         ],
       },
       {
@@ -155,6 +171,8 @@ export const FLAVOURS = [
         words: [
           'Hanuman', 'Ganesha', 'Krishna', 'Shiva', 'Lakshmi', 'Ramayana',
           'Mahabharata', 'Ganga', 'Arjuna', 'Ravana', 'Karna', 'Durga',
+          'Brahma', 'Vishnu', 'Indra', 'Sita', 'Draupadi', 'Saraswati',
+          'Parvati', 'Garuda',
         ],
       },
       {
@@ -164,6 +182,8 @@ export const FLAVOURS = [
         words: [
           'Recharge', 'Street Cricket', 'Aunty Network', 'Horn Please',
           'Middle Seat', 'RRR', 'Nail Paint', 'Tea Break', 'Tiffin', 'Rash Driving',
+          'Filter Coffee', 'Local Train', 'Bargain', 'Late Night Drive', 'Office Rush',
+          'First Day', 'Notice Board', 'Water Bottle', 'Slippers', 'Queue',
         ],
       },
       {
@@ -173,6 +193,7 @@ export const FLAVOURS = [
         words: [
           'Wedding', 'Henna Night', 'Groom Parade', 'Music Night', 'Wedding Feast',
           'Groom', 'Bride', 'Band', 'Engagement', 'Ceremony',
+          'Reception', 'Invitation', 'Gift', 'Decor', 'Honeymoon',
         ],
       },
       {
@@ -182,6 +203,7 @@ export const FLAVOURS = [
         words: [
           'Tea', 'Fritters', 'Kabaddi', 'Paper Boat', 'Traffic Jam',
           'Umbrella', 'Rain Dance', 'School Holiday', 'Snack', 'Muddy Ground',
+          'Rainbow', 'Flood', 'Potholes', 'Hot Tea', 'Drizzle', 'Thunder',
         ],
       },
       {
@@ -191,6 +213,7 @@ export const FLAVOURS = [
         words: [
           'Back Bench', 'Hall Ticket', 'Street Boy', 'Mid-Day Meal', 'Uniform',
           'Attendance', 'Project Copy', 'OTR', 'Exam Hall', 'Brother', 'Sister',
+          'Library', 'Canteen', 'Playground', 'Bench', 'Homework', 'Lab', 'Bell',
         ],
       },
       {
@@ -200,6 +223,7 @@ export const FLAVOURS = [
         words: [
           'Rajinikanth', 'Kolaveri Di', 'Superstar', 'Kuppamma', 'Master',
           'Kamal Haasan', 'Vijay', 'Amaran', 'Mersal', 'Kabali',
+          'Petta', 'Jailer', 'Vikram', 'Kaithi', '96', 'Asuran', 'Leo', 'Ponniyin Selvan',
         ],
       },
       {
@@ -211,6 +235,7 @@ export const FLAVOURS = [
           'Magadheera', 'Eega', 'Jersey', 'Ala Vaikunthapurramuloo',
           'Gabbar Singh', 'Attarintiki Daaredi', 'Rangasthalam', 'Srimanthudu',
           'Pawan Kalyan', 'Jr NTR', 'Allu Arjun', 'Mahesh Babu', 'SS Rajamouli',
+          'Uppena', 'Fidaa', 'DJ', 'Sarileru Neekevvaru', 'Sankranthi',
         ],
       },
       {
@@ -255,6 +280,8 @@ export const FLAVOURS = [
         words: [
           'Idli', 'Dosa', 'Vada', 'Pesarattu', 'Upma', 'Pulihora',
           'Gongura Pachadi', 'Bobbatlu', 'Payasam', 'Garelu',
+          'Punugulu', 'Appam', 'Bonda', 'Mysore Bonda', 'Rava Dosa',
+          'Pootharekulu', 'Ariselu', 'Pappu', 'Curd Rice',
         ],
       },
       {
@@ -264,6 +291,7 @@ export const FLAVOURS = [
         words: [
           'Arey Babu', 'Nuvvu Naaku Nachavu', 'Raa Raa', 'Em Ayyindhi',
           'Ekkada Ekkada', 'Cheppanu', 'Vayyo', 'Asalu', 'Sarele', 'Babu Garu',
+          'Bagundha', 'Super', 'Chala Baga', 'Avuna', 'Nijamga', 'Aithe',
         ],
       },
       {
@@ -273,6 +301,7 @@ export const FLAVOURS = [
         words: [
           'Sankranti', 'Ugadi', 'Dasara', 'Shivaratri', 'Vinayaka Chavithi',
           'Deepavali', 'Holi', 'Rakhi',
+          'Bathukamma', 'Bonalu', 'Atla Taddi', 'Muggulu',
         ],
       },
       {
@@ -282,6 +311,7 @@ export const FLAVOURS = [
         words: [
           'Hyderabad', 'Visakhapatnam', 'Vijayawada', 'Tirupati', 'Warangal',
           'Guntur', 'Kakinada', 'Nellore', 'Anantapur', 'Kurnool',
+          'Rajahmundry', 'Karimnagar', 'Khammam', 'Nizamabad', 'Adilabad',
         ],
       },
       {
@@ -291,6 +321,7 @@ export const FLAVOURS = [
         words: [
           'Auto', 'Chai Hotel', 'Idli Hotel', 'Mirchi Bajji', 'Pani Puri',
           'Gazulu Bazaar', 'Poo Market', 'Pan Shop',
+          'Tea Stall', 'Tiffin Center', 'Juice Shop', 'Bus Stand', 'Market',
         ],
       },
       {
@@ -300,6 +331,7 @@ export const FLAVOURS = [
         words: [
           'Dhoni', 'Virat Kohli', 'Sachin', 'Rohit Sharma', 'Jadeja',
           'Bumrah', 'IPL', 'Helicopter Shot', 'Yorker', 'Sixer',
+          'Century', 'Half Century', 'Wicket', 'Boundary', 'Trophy',
         ],
       },
       {
