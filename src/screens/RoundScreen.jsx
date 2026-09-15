@@ -4,7 +4,7 @@ import { Button } from '../components/ui'
 import { sfx } from '../game/sound'
 
 export default function RoundScreen({ game }) {
-  const { round, players, settings, terms, closeRound } = game
+  const { round, players, settings, terms, closeRound, skipWord, restart } = game
   const timer = settings.timer
   const total = timer.enabled ? timer.minutes * 60 : 0
   const [left, setLeft] = useState(total)
@@ -96,6 +96,15 @@ export default function RoundScreen({ game }) {
         <Button className="mt-4 w-full py-4 text-xl" onClick={closeRound}>
           🛑 Close round & vote
         </Button>
+        <div className="mt-3 flex gap-3 w-full">
+          <Button variant="dark" className="flex-1 py-3 text-base" onClick={skipWord}>
+            🔄 Skip word
+          </Button>
+          <Button variant="dark" className="flex-1 py-3 text-base" onClick={restart}>
+            ✕ Close game
+          </Button>
+        </div>
+        <p className="mt-2 text-xs text-white/30 text-center">Skip picks a new word if you got a wrong one — same players & imposters.</p>
       </motion.div>
     </div>
   )

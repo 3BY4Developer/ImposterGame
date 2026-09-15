@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { colorFor, avatarFor } from '../game/useGame'
 import { wordText } from '../data/flavours'
@@ -6,8 +6,10 @@ import { Button } from '../components/ui'
 import { sfx } from '../game/sound'
 
 export default function RevealScreen({ game }) {
-  const { round, players, revealIndex, settings, terms, finishReveal } = game
+  const { round, players, revealIndex, settings, terms, finishReveal, skipWord, restart } = game
   const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => setRevealed(false), [round.word])
 
   const imposterHint =
     settings.imposterHint === 'none'
@@ -137,6 +139,14 @@ export default function RevealScreen({ game }) {
             <Button className="mt-6 w-full py-4 text-xl" onClick={next}>
               {isLast ? '🎯 Start the round' : `➡️ ${terms.nextPlayer}`}
             </Button>
+            <div className="mt-3 flex gap-3 w-full">
+              <Button variant="dark" className="flex-1 py-2 text-sm" onClick={skipWord}>
+                🔄 Skip word
+              </Button>
+              <Button variant="dark" className="flex-1 py-2 text-sm" onClick={restart}>
+                ✕ Close
+              </Button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

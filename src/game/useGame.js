@@ -145,6 +145,39 @@ export function useGame() {
     setPhase(PHASES.round)
   }, [])
 
+  const skipWord = useCallback(() => {
+    if (!round) return
+    const customWords = loadCustomWords()
+    const playable = [
+      ...flavour.categories.filter((c) => c.words.length >= 3),
+      ...(customWords.length >= 3 ? [{ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords }] : []),
+    ]
+    const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
+    // Pick new word different from current if possible
+    let category = round.category
+    let word = round.word
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const cat = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
+      const w = cat.words[Math.floor(Math.random() * cat.words.length)]
+      if (w !== word || cat.id !== category.id) {
+        category = cat
+        word = w
+        break
+      }
+    }
+    const hint = wordHint(word) ?? 'hint'
+    let imposterWord = null
+    if (settings.gameMode === 'dark') {
+      const others = category.words.filter((w) => w !== word)
+      imposterWord = others[Math.floor(Math.random() * others.length)]
+    }
+    setRound((prev) => ({ ...prev, word, hint, imposterWord, category }))
+    setRevealIndex(0)
+    setAccusedId(null)
+    setPhase(PHASES.reveal)
+    sfx.pop()
+  }, [round, settings, flavour])
+
   const closeRound = useCallback(() => {
     setPhase(PHASES.vote)
   }, [])
@@ -176,6 +209,7 @@ export function useGame() {
     toggleAllCategories,
     setSettings,
     startGame,
+    skipWord,
     setRevealIndex,
     finishReveal,
     setAccusedId,
