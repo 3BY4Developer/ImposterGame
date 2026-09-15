@@ -283,6 +283,21 @@ export const FLAVOURS = [
         ],
       },
       {
+        id: 'south-nouns',
+        name: 'South Indian Nouns',
+        emoji: '🏠',
+        words: [
+          // Everyday South Indian household & street nouns
+          'Steel Dabba', 'Steel Tumbler', 'Filter Coffee Maker', 'Banana Leaf', 'Coconut Scraper',
+          'Wet Grinder', 'Mixie', 'Pressure Cooker', 'Brass Pot', 'Kolam Powder',
+          'Incense Stick', 'Kumkum Box', 'Turmeric', 'Curry Leaf', 'Tamarind',
+          'Coconut Oil', 'Wooden Cot', 'Coir Mat', 'Steel Kettle', 'Brass Lamp',
+          'Jute Bag', 'Slippers', 'Lungi', 'Cotton Saree', 'Bangle Set',
+          'Jasmine Garland', 'Betel Leaf', 'Areca Nut', 'Rice Drum', 'Water Pot',
+          'Threshold Art', 'Pooja Room', 'Veranda Swing', 'Tulsi Plant',
+        ],
+      },
+      {
         id: 'ajay-list',
         name: 'Ajay List',
         emoji: '🎯',
@@ -418,6 +433,7 @@ const SUBTLE_HINT = {
   education: 'school',
   tamil: 'cinema',
   tollywood: 'cinema',
+  'south-nouns': 'home',
   'ajay-list': 'friend',
   'tl-tiffins': 'tiffin',
   'tl-dialogues': 'talk',
