@@ -68,6 +68,9 @@ export const FLAVOURS = [
           'Paratha', 'Upma', 'Payasam', 'Rasgulla', 'Laddu', 'Poha', 'Medu Vada',
           'Sambar', 'Curd Rice', 'Kulcha', 'Tandoori Chicken', 'Lassi', 'Bhel Puri',
           'Chutney', 'Pickle', 'Kheer', 'Halwa',
+          // Indian + general additions
+          'Mango', 'Coconut Water', 'Filter Coffee', 'Egg Roll', 'Fish Curry',
+          'Mutton Curry', 'Chapati', 'Hyderabadi Biryani', 'Mysore Pak', 'Appam',
         ],
       },
       {
@@ -76,10 +79,13 @@ export const FLAVOURS = [
         emoji: '🛺',
         words: [
           'Auto Rickshaw', 'Tea Seller', 'Lunch Carrier', 'Street Barber', 'Water Seller',
-          'Cobbler', 'Lassi Shop', 'Hawker', 'Rickshaw', 'Mehndi Artist',
+          'Cobbler', 'Lassi Shop', 'Rickshaw', 'Mehndi Artist',
           'General Store', 'Corner', 'Cart', 'Tea Stall', 'Betel Shop',
           'Fruit Stall', 'Flower Vendor', 'Bus Stop', 'Newspaper Stall', 'Shoe Shine',
-          'Cycle Repair', 'Chai Corner', 'Milk Booth', 'Traffic Signal',
+          'Cycle Repair', 'Milk Booth', 'Traffic Signal',
+          // Indian + general additions (relevant to street)
+          'Pani Puri Cart', 'Sweet Shop', 'Cloth Shop', 'Mobile Repair', 'Sugarcane Juice',
+          'Peanut Seller', 'Bangle Shop', 'Temple Street', 'Market Crowd', 'Street Light',
         ],
       },
       {
@@ -92,6 +98,9 @@ export const FLAVOURS = [
           'Gully Boy', 'Chhichhore', 'Rang De Basanti', 'Queen', 'Gangs of Wasseypur',
           'Munna Bhai', 'PK', 'Bajrangi Bhaijaan', 'KGF', 'Drishyam',
           'Pathaan', 'Brahmastra', 'Kantara', 'Jawan',
+          // Indian + general additions (relevant: movies)
+          'Chennai Express', 'Barfi', 'Taare Zameen Par', 'Singham', 'Don',
+          'Kahani', 'Aashiqui', 'Stree', 'Kesari', 'Uri',
         ],
       },
       {
@@ -104,6 +113,9 @@ export const FLAVOURS = [
           'Salman Khan', 'Hrithik Roshan', 'Ajay Devgn', 'Anushka Sharma',
           'Ranveer Singh', 'Shahid Kapoor', 'Varun Dhawan', 'Kareena Kapoor',
           'Kartik Aaryan', 'Rashmika Mandanna',
+          // General + Indian stars (relevant)
+          'Akshay Kumar', 'Aishwarya Rai', 'Rajkumar Rao', 'Vicky Kaushal', 'Shraddha Kapoor',
+          'Ayushmann Khurrana', 'Kriti Sanon', 'Tiger Shroff',
         ],
       },
       {
@@ -116,6 +128,9 @@ export const FLAVOURS = [
           'Rishabh Pant', 'World Cup Final 2011',
           'Virender Sehwag', 'Yuvraj Singh', 'Kapil Dev', 'Sunil Gavaskar',
           'Harbhajan Singh', 'Anil Kumble', 'Suresh Raina', 'Shikhar Dhawan',
+          // Indian + general additions
+          'Gautam Gambhir', 'Zaheer Khan', 'Sourav Ganguly', 'Rahul Dravid', 'Shreyas Iyer',
+          'Stadium', 'Cricket Bat', 'Cricket Ball',
         ],
       },
       {
@@ -127,6 +142,8 @@ export const FLAVOURS = [
           'Powerplay', 'Super Over', 'Century', 'LBW', 'DL Method',
           'Bouncer', 'Doosra', 'Stumped', 'Run Out', 'No Ball',
           'Wide', 'Free Hit', 'Appeal',
+          // General cricket terms (relevant)
+          'Boundary', 'Wicket', 'Maiden Over', 'Hat Trick', 'Follow On', 'Toss', 'Umpire', 'Crease',
         ],
       },
       {
@@ -139,6 +156,9 @@ export const FLAVOURS = [
           'Christmas', 'Lohri', 'Sankranti', 'Ugadi', 'Dasara', 'Shivaratri',
           'Vinayaka Chavithi', 'Gudi Padwa', 'Baisakhi', 'Thrissur Pooram',
           'Hornbill Festival', 'Pushkar Fair',
+          // Indian + general additions
+          'Makar Sankranti', 'Karva Chauth', 'Janmashtami', 'Maha Shivaratri', 'Bihu',
+          'Chhath Puja', 'Guru Nanak Jayanti', 'Easter',
         ],
       },
       {
@@ -151,6 +171,9 @@ export const FLAVOURS = [
           'Mysore Palace', 'Meenakshi Temple', 'Kumbhalgarh Fort',
           'Victoria Memorial', 'Lotus Temple', 'Ajanta Caves', 'Jantar Mantar',
           'Marine Drive', 'Statue of Unity', 'Chennai Central',
+          // Indian + general additions (relevant landmarks)
+          'Sanchi Stupa', 'Konark Temple', 'Ellora Caves', 'Amber Fort', 'Ganga Ghat',
+          'Varanasi Ghat', 'Mysore Dasara', 'Fort Kochi',
         ],
       },
       {
@@ -162,6 +185,9 @@ export const FLAVOURS = [
           'Jaipur', 'Lucknow', 'Pune', 'Ahmedabad', 'Kerala', 'Goa',
           'Punjab', 'Kashmir', 'Varanasi', 'Amritsar', 'Udaipur', 'Mysore', 'Kochi',
           'Nagpur', 'Indore', 'Patna', 'Kanpur', 'Surat', 'Bhopal', 'Coimbatore',
+          // Indian + general additions (relevant)
+          'Chandigarh', 'Shimla', 'Darjeeling', 'Ooty', 'Andaman Islands',
+          'Rajasthan', 'Gujarat', 'Tamil Nadu', 'Assam', 'Meghalaya',
         ],
       },
       {
@@ -173,6 +199,8 @@ export const FLAVOURS = [
           'Mahabharata', 'Ganga', 'Arjuna', 'Ravana', 'Karna', 'Durga',
           'Brahma', 'Vishnu', 'Indra', 'Sita', 'Draupadi', 'Saraswati',
           'Parvati', 'Garuda',
+          // Indian + general additions
+          'Ayodhya', 'Kurukshetra', 'Vedas', 'Mantra', 'Temple Bell', 'Trishul', 'Peacock Feather', 'Conch',
         ],
       },
       {
@@ -184,6 +212,9 @@ export const FLAVOURS = [
           'Middle Seat', 'RRR', 'Nail Paint', 'Tea Break', 'Tiffin', 'Rash Driving',
           'Filter Coffee', 'Local Train', 'Bargain', 'Late Night Drive', 'Office Rush',
           'First Day', 'Notice Board', 'Water Bottle', 'Slippers', 'Queue',
+          // Indian + general additions (relevant everyday)
+          'Power Cut', 'Family Function', 'Festival Sale', 'Traffic Police', 'Cooler', 'Mosquito Coil',
+          'Corner Shop', 'Paper Plane',
         ],
       },
       {
@@ -194,6 +225,9 @@ export const FLAVOURS = [
           'Wedding', 'Henna Night', 'Groom Parade', 'Music Night', 'Wedding Feast',
           'Groom', 'Bride', 'Band', 'Engagement', 'Ceremony',
           'Reception', 'Invitation', 'Gift', 'Decor', 'Honeymoon',
+          // Indian + general additions
+          'Wedding Card', 'Wedding Saree', 'Fire Ritual', 'Seven Rounds', 'Family Photo',
+          'Dance Floor', 'Sweet Box', 'Return Gift',
         ],
       },
       {
@@ -204,6 +238,9 @@ export const FLAVOURS = [
           'Tea', 'Fritters', 'Kabaddi', 'Paper Boat', 'Traffic Jam',
           'Umbrella', 'Rain Dance', 'School Holiday', 'Snack', 'Muddy Ground',
           'Rainbow', 'Flood', 'Potholes', 'Hot Tea', 'Drizzle', 'Thunder',
+          // Indian + general additions
+          'Raincoat', 'Puddle', 'Hot Soup', 'Lightning', 'Cool Breeze', 'Mud House',
+          'Tea Stall', 'Wet Clothes',
         ],
       },
       {
@@ -214,6 +251,8 @@ export const FLAVOURS = [
           'Back Bench', 'Hall Ticket', 'Street Boy', 'Mid-Day Meal', 'Uniform',
           'Attendance', 'Project Copy', 'OTR', 'Exam Hall', 'Brother', 'Sister',
           'Library', 'Canteen', 'Playground', 'Bench', 'Homework', 'Lab', 'Bell',
+          // Indian + general additions
+          'Class Monitor', 'School Bus', 'Prayer Hall', 'Black Board', 'Chalk', 'Exam Paper', 'Report Card', 'Sports Day',
         ],
       },
       {
@@ -224,6 +263,8 @@ export const FLAVOURS = [
           'Rajinikanth', 'Kolaveri Di', 'Superstar', 'Kuppamma', 'Master',
           'Kamal Haasan', 'Vijay', 'Amaran', 'Mersal', 'Kabali',
           'Petta', 'Jailer', 'Vikram', 'Kaithi', '96', 'Asuran', 'Leo', 'Ponniyin Selvan',
+          // Indian + general additions
+          'Vikram Vedha', 'Sivaji', 'Enthiran', 'Nayagan', 'Anniyan', 'Ghilli', 'Varisu', 'Bigil',
         ],
       },
       {
@@ -236,6 +277,9 @@ export const FLAVOURS = [
           'Gabbar Singh', 'Attarintiki Daaredi', 'Rangasthalam', 'Srimanthudu',
           'Pawan Kalyan', 'Jr NTR', 'Allu Arjun', 'Mahesh Babu', 'SS Rajamouli',
           'Uppena', 'Fidaa', 'DJ', 'Sarileru Neekevvaru', 'Sankranthi',
+          // Indian + general additions
+          'Aravinda Sametha', 'Bharat Ane Nenu', 'Srimanthudu', 'Mirchi', 'Business Man',
+          'Temper', 'Janatha Garage', 'Spyder',
         ],
       },
       {

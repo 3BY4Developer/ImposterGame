@@ -98,12 +98,10 @@ export function useGame() {
   }, [])
 
   const startGame = useCallback(() => {
+    // Players order is kept as entered — used for opening cards & playing sequence (src/screens/RevealScreen.jsx:19, VoteScreen)
     const order = players.map((_, i) => i)
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[order[i], order[j]] = [order[j], order[i]]
-    }
 
+    // Imposter selection is random among players
     const imposterPool = [...order]
     const imposterIds = []
     for (let k = 0; k < settings.imposterCount; k++) {
