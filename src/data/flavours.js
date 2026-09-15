@@ -73,9 +73,9 @@ export const FLAVOURS = [
         name: 'Street Life',
         emoji: '🛺',
         words: [
-          'Auto Rickshaw', 'Chaiwala', 'Dabbawala', 'Street Barber', 'Paaniwala',
-          'Cobbler', 'Lassi Shop', 'Hawker', 'Rikshaw', 'Mehndi Artist',
-          'Kirana', 'Nukkad', 'Thela', 'Chai Tapri', 'Pan Shop',
+          'Auto Rickshaw', 'Tea Seller', 'Lunch Carrier', 'Street Barber', 'Water Seller',
+          'Cobbler', 'Lassi Shop', 'Hawker', 'Rickshaw', 'Mehndi Artist',
+          'General Store', 'Corner', 'Cart', 'Tea Stall', 'Betel Shop',
         ],
       },
       {
@@ -162,8 +162,8 @@ export const FLAVOURS = [
         name: 'Pure Desi Things',
         emoji: '💛',
         words: [
-          'Recharge', 'Gully Cricket', 'Aunty Network', 'Horn Please',
-          'Middle Seat', 'RRR', 'Nail Paint', 'Chai Break', 'Tiffin', 'Rash Driving',
+          'Recharge', 'Street Cricket', 'Aunty Network', 'Horn Please',
+          'Middle Seat', 'RRR', 'Nail Paint', 'Tea Break', 'Tiffin', 'Rash Driving',
         ],
       },
       {
@@ -171,8 +171,8 @@ export const FLAVOURS = [
         name: 'Wedding Season',
         emoji: '💍',
         words: [
-          'Shaadi', 'Mehndi Night', 'Baraat', 'Sangeet', 'Shaadi Ka Khaana',
-          'Dulha', 'Dulhan', 'Band Baaja', 'Roka', 'Kalyanam',
+          'Wedding', 'Henna Night', 'Groom Parade', 'Music Night', 'Wedding Feast',
+          'Groom', 'Bride', 'Band', 'Engagement', 'Ceremony',
         ],
       },
       {
@@ -180,8 +180,8 @@ export const FLAVOURS = [
         name: 'Monsoon Feels',
         emoji: '☔',
         words: [
-          'Chai', 'Pakora', 'Kabaddi', 'Paper Boat', 'Traffic Jam',
-          'Umbrella', 'Rain Dance', 'School Holiday', 'Bajji', 'Muddy Ground',
+          'Tea', 'Fritters', 'Kabaddi', 'Paper Boat', 'Traffic Jam',
+          'Umbrella', 'Rain Dance', 'School Holiday', 'Snack', 'Muddy Ground',
         ],
       },
       {
@@ -189,8 +189,8 @@ export const FLAVOURS = [
         name: 'School & College',
         emoji: '🎒',
         words: [
-          'Back Bench', 'Hall Ticket', 'Gully Boy', 'Mid-Day Meal', 'Uniform',
-          'Attendance', 'Project Copy', 'OTR', 'Exam Hall', 'Brother', 'Didi',
+          'Back Bench', 'Hall Ticket', 'Street Boy', 'Mid-Day Meal', 'Uniform',
+          'Attendance', 'Project Copy', 'OTR', 'Exam Hall', 'Brother', 'Sister',
         ],
       },
       {
@@ -218,16 +218,16 @@ export const FLAVOURS = [
         name: 'Ajay List',
         emoji: '🎯',
         words: [
-          { w: 'Varanasi', h: 'babu' },
-          { w: 'Ramayan', h: 'cinema doubt eh' },
-          { w: 'Babu', h: 'star' },
-          { w: 'bhai', h: 'Cheppanu' },
-          { w: 'buddodu', h: 'daddy' },
-          { w: 'Maxi', h: 'nasa' },
-          { w: 'Maggi', h: '2 min' },
-          { w: 'Masqati', h: 'icecream' },
-          { w: 'Bawarchi', h: 'sandhya' },
-          { w: 'Raja prince', h: 'mountain' },
+          { w: 'Varanasi', h: 'river' },
+          { w: 'Epic', h: 'movie' },
+          { w: 'Star', h: 'famous' },
+          { w: 'Brother', h: 'family' },
+          { w: 'Buddy', h: 'friend' },
+          { w: 'Rocket', h: 'space' },
+          { w: 'Noodles', h: 'quick' },
+          { w: 'Dessert', h: 'sweet' },
+          { w: 'Chef', h: 'kitchen' },
+          { w: 'King', h: 'hill' },
         ],
       },
     ],
@@ -307,58 +307,58 @@ export const FLAVOURS = [
         name: 'Ajay List',
         emoji: '🎯',
         words: [
-          { w: 'Varanasi', h: 'babu' },
-          { w: 'Ramayan', h: 'cinema doubt eh' },
-          { w: 'Babu', h: 'star' },
-          { w: 'bhai', h: 'Cheppanu' },
-          { w: 'buddodu', h: 'daddy' },
-          { w: 'Maxi', h: 'nasa' },
-          { w: 'Maggi', h: '2 min' },
-          { w: 'Masqati', h: 'icecream' },
-          { w: 'Bawarchi', h: 'sandhya' },
-          { w: 'Raja prince', h: 'mountain' },
+          { w: 'Varanasi', h: 'river' },
+          { w: 'Epic', h: 'movie' },
+          { w: 'Star', h: 'famous' },
+          { w: 'Brother', h: 'family' },
+          { w: 'Buddy', h: 'friend' },
+          { w: 'Rocket', h: 'space' },
+          { w: 'Noodles', h: 'quick' },
+          { w: 'Dessert', h: 'sweet' },
+          { w: 'Chef', h: 'kitchen' },
+          { w: 'King', h: 'hill' },
         ],
       },
     ],
   },
 ]
 
-// Subtle, indianised fallback hints — intentionally vague so the
-// imposter gets a nudge about the *type* of word, not the word itself.
-// These are common Hindi/Telugu-ish words, not category labels.
+// Subtle fallback hints — intentionally vague so the imposter gets
+// a nudge about the *type* of word, not the word itself. English only.
 const SUBTLE_HINT = {
-  food: 'swaad',
-  street: 'gully',
-  bollywood: 'filmy',
-  heroes: 'hero',
-  cricket: 'maidaan',
-  'cricket-terms': 'maidaan',
-  festivals: 'tyohaar',
-  landmarks: 'jagah',
-  cities: 'shehar',
-  mythology: 'katha',
-  everyday: 'rozmarra',
-  matchmaking: 'shaadi',
-  monsoon: 'barsaat',
-  education: 'padhai',
-  tamil: 'padam',
+  food: 'taste',
+  street: 'street',
+  bollywood: 'movie',
+  heroes: 'star',
+  cricket: 'sport',
+  'cricket-terms': 'sport',
+  festivals: 'festival',
+  landmarks: 'place',
+  cities: 'city',
+  mythology: 'myth',
+  everyday: 'daily',
+  matchmaking: 'wedding',
+  monsoon: 'rain',
+  education: 'school',
+  tamil: 'cinema',
   tollywood: 'cinema',
-  'ajay-list': 'yaarana',
+  'ajay-list': 'friend',
   'tl-tiffins': 'tiffin',
-  'tl-dialogues': 'maata',
-  'tl-festivals': 'pandaga',
-  'tl-cities': 'ooru',
-  'tl-street': 'veedhi',
-  'tl-cricket': 'aata',
-  custom: 'apna',
+  'tl-dialogues': 'talk',
+  'tl-festivals': 'festival',
+  'tl-cities': 'city',
+  'tl-street': 'street',
+  'tl-cricket': 'sport',
+  custom: 'custom',
 }
 
 // Ensure every word carries an imposter-only hint. Plain-string words are
-// enriched to { w, h } where h is a subtle, common indianised hint
-// (not the word itself). Explicit {w,h} entries (Ajay List) are preserved.
+// enriched to { w, h } where h is a subtle English hint (not the word
+// itself). Explicit {w,h} entries (Ajay List) are preserved — they are
+// also normalized to English below.
 for (const flavour of FLAVOURS) {
   for (const cat of flavour.categories) {
-    const fallback = SUBTLE_HINT[cat.id] ?? 'desi'
+    const fallback = SUBTLE_HINT[cat.id] ?? 'hint'
     cat.words = cat.words.map((w) => (typeof w === 'string' ? { w, h: fallback } : w))
   }
 }

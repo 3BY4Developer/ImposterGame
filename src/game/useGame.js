@@ -112,8 +112,8 @@ export function useGame() {
     const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
     const category = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
     const word = category.words[Math.floor(Math.random() * category.words.length)]
-    // Subtle indianised fallback — doesn't reveal the word, just nudges imposter
-    const hint = wordHint(word) ?? 'desi'
+    // Subtle fallback — doesn't reveal the word, just nudges imposter
+    const hint = wordHint(word) ?? 'hint'
 
     let imposterWord = null
     if (settings.gameMode === 'dark') {
