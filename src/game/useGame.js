@@ -87,7 +87,14 @@ export function useGame() {
   }, [])
 
   const toggleAllCategories = useCallback((ids, allOn) => {
-    setSettings((s) => ({ ...s, categoryIds: allOn ? ids : [] }))
+    setSettings((s) => {
+      if (allOn) {
+        // Select all real categories, exclude 'random' to avoid redundant state
+        const filtered = ids.filter((id) => id !== 'random')
+        return { ...s, categoryIds: filtered }
+      }
+      return { ...s, categoryIds: [] }
+    })
   }, [])
 
   const startGame = useCallback(() => {

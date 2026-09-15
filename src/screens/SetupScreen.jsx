@@ -11,7 +11,7 @@ function ManageWordsModal({ open, onClose, words, setWords }) {
 
   const add = () => {
     const w = draft.trim()
-    if (!w || words.includes(w) || words.length >= 60) return
+    if (!w || words.some((x) => x.toLowerCase() === w.toLowerCase()) || words.length >= 60) return
     setWords([...words, w])
     setDraft('')
     sfx.pop()
