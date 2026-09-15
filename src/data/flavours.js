@@ -65,7 +65,7 @@ export const FLAVOURS = [
           'Biryani', 'Dosa', 'Vada Pav', 'Samosa', 'Pav Bhaji', 'Gulab Jamun',
           'Chole Bhature', 'Pani Puri', 'Litti Chokha', 'Rajma Chawal',
           'Paneer Tikka', 'Masala Dosa', 'Jalebi', 'Kathi Roll', 'Dhokla',
-          'Pulihora', 'Upma', 'Payasam', 'Ariselu', 'Garelu', 'Chakkili', 'Medu Vada',
+          'Paratha', 'Upma', 'Payasam', 'Rasgulla', 'Laddu', 'Poha', 'Medu Vada',
         ],
       },
       {
@@ -75,7 +75,7 @@ export const FLAVOURS = [
         words: [
           'Auto Rickshaw', 'Chaiwala', 'Dabbawala', 'Street Barber', 'Paaniwala',
           'Cobbler', 'Lassi Shop', 'Hawker', 'Rikshaw', 'Mehndi Artist',
-          'Chai Hotel', 'Idli Hotel', 'Mirchi Bajji', 'Gazulu Bazaar', 'Pan Shop',
+          'Kirana', 'Nukkad', 'Thela', 'Chai Tapri', 'Pan Shop',
         ],
       },
       {
@@ -144,9 +144,8 @@ export const FLAVOURS = [
         emoji: '🗺️',
         words: [
           'Mumbai', 'Hyderabad', 'Delhi', 'Bengaluru', 'Kolkata', 'Chennai',
-          'Jaipur', 'Kerala', 'Goa', 'Punjab', 'Kashmir', 'Varanasi',
-          'Vijayawada', 'Visakhapatnam', 'Tirupati', 'Warangal', 'Guntur',
-          'Kakinada', 'Nellore',
+          'Jaipur', 'Lucknow', 'Pune', 'Ahmedabad', 'Kerala', 'Goa',
+          'Punjab', 'Kashmir', 'Varanasi', 'Amritsar', 'Udaipur', 'Mysore', 'Kochi',
         ],
       },
       {
@@ -323,3 +322,43 @@ export const FLAVOURS = [
     ],
   },
 ]
+
+// Subtle, indianised fallback hints — intentionally vague so the
+// imposter gets a nudge about the *type* of word, not the word itself.
+// These are common Hindi/Telugu-ish words, not category labels.
+const SUBTLE_HINT = {
+  food: 'swaad',
+  street: 'gully',
+  bollywood: 'filmy',
+  heroes: 'hero',
+  cricket: 'maidaan',
+  'cricket-terms': 'maidaan',
+  festivals: 'tyohaar',
+  landmarks: 'jagah',
+  cities: 'shehar',
+  mythology: 'katha',
+  everyday: 'rozmarra',
+  matchmaking: 'shaadi',
+  monsoon: 'barsaat',
+  education: 'padhai',
+  tamil: 'padam',
+  tollywood: 'cinema',
+  'ajay-list': 'yaarana',
+  'tl-tiffins': 'tiffin',
+  'tl-dialogues': 'maata',
+  'tl-festivals': 'pandaga',
+  'tl-cities': 'ooru',
+  'tl-street': 'veedhi',
+  'tl-cricket': 'aata',
+  custom: 'apna',
+}
+
+// Ensure every word carries an imposter-only hint. Plain-string words are
+// enriched to { w, h } where h is a subtle, common indianised hint
+// (not the word itself). Explicit {w,h} entries (Ajay List) are preserved.
+for (const flavour of FLAVOURS) {
+  for (const cat of flavour.categories) {
+    const fallback = SUBTLE_HINT[cat.id] ?? 'desi'
+    cat.words = cat.words.map((w) => (typeof w === 'string' ? { w, h: fallback } : w))
+  }
+}

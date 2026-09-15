@@ -47,7 +47,7 @@ export function useGame() {
     imposterCount: 1,
     categoryIds: ['ajay-list'],
     timer: { enabled: true, minutes: 3 },
-    imposterHint: 'none',
+    imposterHint: 'word',
   })
 
   const [round, setRound] = useState(null)
@@ -71,7 +71,15 @@ export function useGame() {
 
   const setCategory = useCallback((id, on) => {
     setSettings((s) => {
+      // 'random' is mutually exclusive — selecting it clears others, selecting others clears it
+      if (id === 'random') {
+        if (on) return { ...s, categoryIds: ['random'] }
+        const set = new Set(s.categoryIds)
+        set.delete(id)
+        return { ...s, categoryIds: [...set] }
+      }
       const set = new Set(s.categoryIds)
+      if (set.has('random')) set.delete('random')
       if (on) set.add(id)
       else set.delete(id)
       return { ...s, categoryIds: [...set] }
@@ -104,7 +112,8 @@ export function useGame() {
     const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
     const category = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
     const word = category.words[Math.floor(Math.random() * category.words.length)]
-    const hint = wordHint(word)
+    // Subtle indianised fallback — doesn't reveal the word, just nudges imposter
+    const hint = wordHint(word) ?? 'desi'
 
     let imposterWord = null
     if (settings.gameMode === 'dark') {
@@ -142,6 +151,7 @@ export function useGame() {
   const restart = useCallback(() => {
     setRound(null)
     setAccusedId(null)
+    setRevealIndex(0)
     setPhase(PHASES.setup)
   }, [])
 

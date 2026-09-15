@@ -30,9 +30,13 @@ export default function ResultScreen({ game }) {
         clearTimeout(t2)
       }
     }
-    if (!caught && !firedRef.current) sfx.dud()
+    if (!caught && !firedRef.current) {
+      firedRef.current = true
+      sfx.dud()
+    }
   }, [caught])
 
+  const displayName = (p) => p.name.trim() || `Player ${players.indexOf(p) + 1}`
   const imposters = players.filter((p) => round.imposterIds.has(p.id))
 
   return (
@@ -49,11 +53,11 @@ export default function ResultScreen({ game }) {
         <p className="mx-auto mt-2 max-w-xs text-white/70">
           {caught ? (
             <>
-              Great detective work! <b>{accused?.name}</b> was the {terms.imposter.toLowerCase()}.
+              Great detective work! <b>{accused ? displayName(accused) : ''}</b> was the {terms.imposter.toLowerCase()}.
             </>
           ) : (
             <>
-              <b>{imposters.map((p) => p.name).join(' & ')}</b> fooled everyone — the{' '}
+              <b>{imposters.map(displayName).join(' & ')}</b> fooled everyone — the{' '}
               {terms.imposter.toLowerCase()} wins!
             </>
           )}
@@ -74,7 +78,7 @@ export default function ResultScreen({ game }) {
           </div>
           {round.dark && (
             <div className="mt-3 inline-block rounded-full bg-rose-500/15 border border-rose-400/40 px-4 py-2 text-sm font-semibold text-rose-300">
-              😈 but {imposters.map((p) => p.name).join(' & ')} saw&nbsp;
+              😈 but {imposters.map(displayName).join(' & ')} saw&nbsp;
               <b className="text-white">{wordText(round.imposterWord)}</b>
             </div>
           )}

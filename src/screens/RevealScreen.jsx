@@ -10,11 +10,11 @@ export default function RevealScreen({ game }) {
   const [revealed, setRevealed] = useState(false)
 
   const imposterHint =
-    settings.imposterHint === 'word'
-      ? round.hint
+    settings.imposterHint === 'none'
+      ? null
       : settings.imposterHint === 'category'
         ? `${round.category.emoji} ${round.category.name}`
-        : null
+        : round.hint
 
   const idx = round.order[revealIndex]
   const player = players[idx]
@@ -25,7 +25,7 @@ export default function RevealScreen({ game }) {
     sfx.pop()
     setRevealed(false)
     if (isLast) finishReveal()
-    else game.setRevealIndex(revealIndex + 1)
+    else game.setRevealIndex((prev) => prev + 1)
   }
 
   const onFlip = () => {

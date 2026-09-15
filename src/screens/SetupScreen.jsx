@@ -102,12 +102,14 @@ export default function SetupScreen({ game }) {
     const f = FLAVOURS.find((x) => x.id === id)
     if (!f || id === settings.flavourId) return
     const cats = f.categories.filter((c) => c.words.length >= 3).map((c) => c.id)
-    const keep = settings.categoryIds.filter((cid) => cats.includes(cid))
     sfx.pop()
-    setSettings({
-      ...settings,
-      flavourId: id,
-      categoryIds: keep.length ? keep : cats.slice(0, 3),
+    setSettings((s) => {
+      const keep = s.categoryIds.filter((cid) => cats.includes(cid))
+      return {
+        ...s,
+        flavourId: id,
+        categoryIds: keep.length ? keep : cats.slice(0, 3),
+      }
     })
   }
 
@@ -204,7 +206,7 @@ export default function SetupScreen({ game }) {
             value={settings.imposterCount}
             min={1}
             max={2}
-            onChange={(v) => setSettings({ ...settings, imposterCount: v })}
+            onChange={(v) => setSettings((s) => ({ ...s, imposterCount: v }))}
           />
           {settings.imposterCount >= players.length && (
             <p className="mt-2 text-sm text-rose-400">Too many imposters — add more players!</p>
@@ -255,7 +257,7 @@ export default function SetupScreen({ game }) {
           <div className="flex flex-col gap-3">
             <Toggle
               on={settings.timer.enabled}
-              onChange={(on) => setSettings({ ...settings, timer: { ...settings.timer, enabled: on } })}
+              onChange={(on) => setSettings((s) => ({ ...s, timer: { ...s.timer, enabled: on } }))}
               label="Enable round timer"
             />
             {settings.timer.enabled && (
@@ -264,7 +266,7 @@ export default function SetupScreen({ game }) {
                 value={settings.timer.minutes}
                 min={1}
                 max={5}
-                onChange={(v) => setSettings({ ...settings, timer: { ...settings.timer, minutes: v } })}
+                onChange={(v) => setSettings((s) => ({ ...s, timer: { ...s.timer, minutes: v } }))}
               />
             )}
           </div>
@@ -277,7 +279,7 @@ export default function SetupScreen({ game }) {
               { value: 'dark', label: 'Dark mode' },
             ]}
             value={settings.gameMode}
-            onChange={(v) => setSettings({ ...settings, gameMode: v })}
+            onChange={(v) => setSettings((s) => ({ ...s, gameMode: v }))}
           />
           <p className="mt-2 text-sm text-white/40">
             {settings.gameMode === 'dark' ? (
@@ -304,7 +306,7 @@ export default function SetupScreen({ game }) {
               { value: 'word', label: 'Word hint' },
             ]}
             value={settings.imposterHint}
-            onChange={(v) => setSettings({ ...settings, imposterHint: v })}
+            onChange={(v) => setSettings((s) => ({ ...s, imposterHint: v }))}
           />
           <p className="mt-2 text-sm text-white/40">
             <b className="text-white/60">Word hint</b> shows the secret private hint for the word (if one
