@@ -1,3 +1,30 @@
+const MUTE_KEY = 'desi-imposter/muted'
+
+let muted = false
+try {
+  muted = localStorage.getItem(MUTE_KEY) === 'true'
+} catch {
+  /* storage unavailable */
+}
+
+export function isMuted() {
+  return muted
+}
+
+export function setMuted(val) {
+  muted = Boolean(val)
+  try {
+    localStorage.setItem(MUTE_KEY, String(muted))
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+export function toggleMute() {
+  setMuted(!muted)
+  return muted
+}
+
 let ctx = null
 
 function ac() {
@@ -9,6 +36,7 @@ function ac() {
 }
 
 function tone(freq, dur, type = 'sine', vol = 0.12, when = 0) {
+  if (muted) return
   try {
     const a = ac()
     const t = a.currentTime + when
@@ -50,5 +78,9 @@ export const sfx = {
   dud() {
     tone(300, 0.2, 'sawtooth', 0.09)
     tone(220, 0.3, 'sawtooth', 0.09, 0.12)
+  },
+  buzzer() {
+    tone(160, 0.35, 'sawtooth', 0.15)
+    tone(140, 0.45, 'sawtooth', 0.15, 0.08)
   },
 }

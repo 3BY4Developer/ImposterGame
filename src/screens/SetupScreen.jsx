@@ -120,8 +120,13 @@ export default function SetupScreen({ game }) {
     return cats
   }, [flavour, customWords])
 
+  const realCategories = useMemo(() => {
+    return allCategories.filter((c) => c.id !== 'random')
+  }, [allCategories])
+
   const selectedCats = allCategories.filter((c) => settings.categoryIds.includes(c.id))
-  const allOn = allCategories.length > 0 && selectedCats.length === allCategories.length
+  const selectedRealCats = realCategories.filter((c) => settings.categoryIds.includes(c.id))
+  const allOn = realCategories.length > 0 && selectedRealCats.length === realCategories.length
 
   const playerNames = players.map((p, i) => p.name.trim() || `Player ${i + 1}`)
   const valid =
@@ -134,6 +139,26 @@ export default function SetupScreen({ game }) {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8 text-center"
       >
+        {game.scores?.roundsPlayed > 0 && (
+          <div className="glass mx-auto mb-4 flex max-w-sm items-center justify-between rounded-full border border-white/10 px-4 py-1.5 text-xs font-semibold text-white/80">
+            <span>🏆 Tournament: Round {game.scores.roundsPlayed + 1}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-emerald-400">😇 {game.scores.innocents}</span>
+              <span className="text-white/30">:</span>
+              <span className="text-rose-400">😈 {game.scores.imposters}</span>
+              <button
+                onClick={() => {
+                  game.resetScores()
+                  sfx.pop()
+                }}
+                className="text-white/40 hover:text-rose-400 cursor-pointer ml-1"
+                title="Reset scores"
+              >
+                ↺
+              </button>
+            </div>
+          </div>
+        )}
         <div className="mb-3 inline-flex items-center gap-2 rounded-full glass border border-white/10 px-3 py-1.5 text-xs font-semibold text-white/70">
           <span className="text-base">{flavour.emoji}</span> Flavour: {flavour.label}
           {FLAVOURS.length > 1 && (
@@ -218,7 +243,7 @@ export default function SetupScreen({ game }) {
           aside={
             <button
               onClick={() => {
-                toggleAllCategories(allCategories.map((c) => c.id), !allOn)
+                toggleAllCategories(realCategories.map((c) => c.id), !allOn)
                 sfx.pop()
               }}
               className="text-xs font-semibold text-saffron-400 hover:text-saffron-500 cursor-pointer"

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { FLAVOURS, wordHint } from '../data/flavours'
+import { FLAVOURS, wordHint, wordText } from '../data/flavours'
 import { loadCustomWords } from './storage'
 import { sfx } from './sound'
 
@@ -37,6 +37,41 @@ export function colorFor(index) {
 let n = 0
 const rid = () => ++n
 
+function pickWordFromPool(pool, playable, recentWords = [], excludeWord = null) {
+  const recentLower = new Set(recentWords.map((w) => String(w).toLowerCase()))
+  if (excludeWord) recentLower.add(String(excludeWord).toLowerCase())
+
+  // Find categories that have words not in recent buffer
+  const categoriesWithUnused = pool
+    .map((cat) => ({
+      ...cat,
+      availableWords: cat.words.filter((w) => !recentLower.has(wordText(w).toLowerCase())),
+    }))
+    .filter((c) => c.availableWords.length > 0)
+
+  let category
+  let wordEntry
+  if (categoriesWithUnused.length > 0) {
+    const chosenCat = categoriesWithUnused[Math.floor(Math.random() * categoriesWithUnused.length)]
+    category = pool.find((c) => c.id === chosenCat.id) ?? pool[0]
+    wordEntry = chosenCat.availableWords[Math.floor(Math.random() * chosenCat.availableWords.length)]
+  } else {
+    // Fallback: pick any word in pool (excluding current word if possible)
+    category = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
+    const candidates = excludeWord
+      ? category.words.filter((w) => wordText(w).toLowerCase() !== String(excludeWord).toLowerCase())
+      : category.words
+    wordEntry =
+      candidates.length > 0
+        ? candidates[Math.floor(Math.random() * candidates.length)]
+        : category.words[Math.floor(Math.random() * category.words.length)]
+  }
+
+  const word = wordText(wordEntry)
+  const hint = wordHint(wordEntry) ?? 'hint'
+  return { category, word, hint }
+}
+
 export function useGame() {
   const [phase, setPhase] = useState(PHASES.setup)
   const [players, setPlayers] = useState([{ id: rid(), name: '' }, { id: rid(), name: '' }, { id: rid(), name: '' }])
@@ -52,7 +87,9 @@ export function useGame() {
 
   const [round, setRound] = useState(null)
   const [revealIndex, setRevealIndex] = useState(0)
-  const [accusedId, setAccusedId] = useState(null)
+  const [accusedIds, setAccusedIds] = useState([])
+  const [scores, setScores] = useState({ innocents: 0, imposters: 0, roundsPlayed: 0 })
+  const [recentWords, setRecentWords] = useState([])
 
   const flavour = FLAVOURS.find((f) => f.id === settings.flavourId) ?? FLAVOURS[0]
   const terms = flavour.terms
@@ -97,11 +134,27 @@ export function useGame() {
     })
   }, [])
 
+  const toggleAccusedId = useCallback(
+    (id) => {
+      setAccusedIds((prev) => {
+        if (prev.includes(id)) {
+          return prev.filter((x) => x !== id)
+        }
+        if (settings.imposterCount === 1) {
+          return [id]
+        }
+        if (prev.length >= settings.imposterCount) {
+          return [...prev.slice(1), id]
+        }
+        return [...prev, id]
+      })
+    },
+    [settings.imposterCount]
+  )
+
   const startGame = useCallback(() => {
-    // Players order is kept as entered — used for opening cards & playing sequence (src/screens/RevealScreen.jsx:19, VoteScreen)
     const order = players.map((_, i) => i)
 
-    // Imposter selection is random among players
     const imposterPool = [...order]
     const imposterIds = []
     for (let k = 0; k < settings.imposterCount; k++) {
@@ -115,17 +168,17 @@ export function useGame() {
       ...(customWords.length >= 3 ? [{ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords }] : []),
     ]
     const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
-    const category = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
-    const word = category.words[Math.floor(Math.random() * category.words.length)]
-    // Subtle fallback — doesn't reveal the word, just nudges imposter
-    const hint = wordHint(word) ?? 'hint'
+    const { category, word, hint } = pickWordFromPool(pool, playable, recentWords)
 
     let imposterWord = null
     if (settings.gameMode === 'dark') {
-      const others = category.words.filter((w) => w !== word)
+      const others = category.words.filter((w) => wordText(w) !== word)
       imposterWord = others[Math.floor(Math.random() * others.length)]
     }
 
+    const starterPlayerId = players[Math.floor(Math.random() * players.length)].id
+
+    setRecentWords((prev) => [...prev.slice(-19), word])
     setRound({
       word,
       hint,
@@ -133,13 +186,57 @@ export function useGame() {
       dark: settings.gameMode === 'dark',
       category,
       imposterIds: new Set(imposterIds),
+      starterPlayerId,
       order,
     })
     setRevealIndex(0)
-    setAccusedId(null)
+    setAccusedIds([])
     sfx.fanfare()
     setPhase(PHASES.reveal)
-  }, [players, settings, flavour])
+  }, [players, settings, flavour, recentWords])
+
+  const nextRound = useCallback(() => {
+    const order = players.map((_, i) => i)
+
+    const imposterPool = [...order]
+    const imposterIds = []
+    for (let k = 0; k < settings.imposterCount; k++) {
+      const pick = Math.floor(Math.random() * imposterPool.length)
+      imposterIds.push(players[imposterPool.splice(pick, 1)[0]].id)
+    }
+
+    const customWords = loadCustomWords()
+    const playable = [
+      ...flavour.categories.filter((c) => c.words.length >= 3),
+      ...(customWords.length >= 3 ? [{ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords }] : []),
+    ]
+    const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
+    const { category, word, hint } = pickWordFromPool(pool, playable, recentWords, round?.word)
+
+    let imposterWord = null
+    if (settings.gameMode === 'dark') {
+      const others = category.words.filter((w) => wordText(w) !== word)
+      imposterWord = others[Math.floor(Math.random() * others.length)]
+    }
+
+    const starterPlayerId = players[Math.floor(Math.random() * players.length)].id
+
+    setRecentWords((prev) => [...prev.slice(-19), word])
+    setRound({
+      word,
+      hint,
+      imposterWord,
+      dark: settings.gameMode === 'dark',
+      category,
+      imposterIds: new Set(imposterIds),
+      starterPlayerId,
+      order,
+    })
+    setRevealIndex(0)
+    setAccusedIds([])
+    sfx.fanfare()
+    setPhase(PHASES.reveal)
+  }, [players, settings, flavour, recentWords, round])
 
   const finishReveal = useCallback(() => {
     setPhase(PHASES.round)
@@ -153,42 +250,71 @@ export function useGame() {
       ...(customWords.length >= 3 ? [{ id: 'custom', name: 'My Words', emoji: '🌟', words: customWords }] : []),
     ]
     const pool = settings.categoryIds.includes('random') ? playable : playable.filter((c) => settings.categoryIds.includes(c.id))
-    // Pick new word different from current if possible
-    let category = round.category
-    let word = round.word
-    for (let attempt = 0; attempt < 8; attempt++) {
-      const cat = pool[Math.floor(Math.random() * pool.length)] ?? playable[0]
-      const w = cat.words[Math.floor(Math.random() * cat.words.length)]
-      if (w !== word || cat.id !== category.id) {
-        category = cat
-        word = w
-        break
-      }
-    }
-    const hint = wordHint(word) ?? 'hint'
+    const { category, word, hint } = pickWordFromPool(pool, playable, recentWords, round.word)
+
     let imposterWord = null
     if (settings.gameMode === 'dark') {
-      const others = category.words.filter((w) => w !== word)
+      const others = category.words.filter((w) => wordText(w) !== word)
       imposterWord = others[Math.floor(Math.random() * others.length)]
     }
-    setRound((prev) => ({ ...prev, word, hint, imposterWord, category }))
+
+    const starterPlayerId = players[Math.floor(Math.random() * players.length)].id
+
+    setRecentWords((prev) => [...prev.slice(-19), word])
+    setRound((prev) => ({ ...prev, word, hint, imposterWord, category, starterPlayerId }))
     setRevealIndex(0)
-    setAccusedId(null)
+    setAccusedIds([])
     setPhase(PHASES.reveal)
     sfx.pop()
-  }, [round, settings, flavour])
+  }, [round, settings, flavour, recentWords, players])
 
   const closeRound = useCallback(() => {
     setPhase(PHASES.vote)
   }, [])
 
   const revealVerdict = useCallback(() => {
+    if (!round) return
+    const imposters = players.filter((p) => round.imposterIds.has(p.id))
+    const caughtCount = imposters.filter((p) => accusedIds.includes(p.id)).length
+    const totalImposters = imposters.length
+
+    setScores((prev) => {
+      let innocentsWin = false
+      let impostersWin = false
+      if (totalImposters === 1) {
+        if (caughtCount === 1) innocentsWin = true
+        else impostersWin = true
+      } else {
+        if (caughtCount === totalImposters) {
+          innocentsWin = true
+        } else if (caughtCount === 0) {
+          impostersWin = true
+        } else {
+          // Split / Draw
+          return {
+            innocents: prev.innocents + 1,
+            imposters: prev.imposters + 1,
+            roundsPlayed: prev.roundsPlayed + 1,
+          }
+        }
+      }
+      return {
+        innocents: prev.innocents + (innocentsWin ? 1 : 0),
+        imposters: prev.imposters + (impostersWin ? 1 : 0),
+        roundsPlayed: prev.roundsPlayed + 1,
+      }
+    })
+
     setPhase(PHASES.result)
+  }, [round, players, accusedIds])
+
+  const resetScores = useCallback(() => {
+    setScores({ innocents: 0, imposters: 0, roundsPlayed: 0 })
   }, [])
 
   const restart = useCallback(() => {
     setRound(null)
-    setAccusedId(null)
+    setAccusedIds([])
     setRevealIndex(0)
     setPhase(PHASES.setup)
   }, [])
@@ -199,7 +325,13 @@ export function useGame() {
     settings,
     round,
     revealIndex,
-    accusedId,
+    accusedId: accusedIds[0] ?? null,
+    accusedIds,
+    toggleAccusedId,
+    setAccusedIds,
+    scores,
+    resetScores,
+    nextRound,
     flavour,
     terms,
     addPlayer,
@@ -212,7 +344,6 @@ export function useGame() {
     skipWord,
     setRevealIndex,
     finishReveal,
-    setAccusedId,
     closeRound,
     revealVerdict,
     restart,

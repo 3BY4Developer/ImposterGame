@@ -8,8 +8,12 @@ import { sfx } from '../game/sound'
 export default function RevealScreen({ game }) {
   const { round, players, revealIndex, settings, terms, finishReveal, skipWord, restart } = game
   const [revealed, setRevealed] = useState(false)
+  const [flipped, setFlipped] = useState(false)
 
-  useEffect(() => setRevealed(false), [round.word])
+  useEffect(() => {
+    setRevealed(false)
+    setFlipped(false)
+  }, [round.word, revealIndex])
 
   const imposterHint =
     settings.imposterHint === 'none'
@@ -22,23 +26,30 @@ export default function RevealScreen({ game }) {
   const player = players[idx]
   const isImposter = round.imposterIds.has(player.id)
   const isLast = revealIndex === round.order.length - 1
+  const starter = players.find((p) => p.id === round.starterPlayerId) ?? players[0]
 
   const next = () => {
     sfx.pop()
     setRevealed(false)
+    setFlipped(false)
     if (isLast) finishReveal()
     else game.setRevealIndex((prev) => prev + 1)
   }
 
-  const onFlip = () => {
-    if (revealed) return
+  const openCard = () => {
     setRevealed(true)
+    setFlipped(true)
     if (isImposter && !round.dark) sfx.imposter()
     else sfx.reveal()
   }
 
+  const toggleFlip = () => {
+    sfx.pop()
+    setFlipped((f) => !f)
+  }
+
   return (
-    <div className="relative z-10 mx-auto flex w-full max-w-md flex-col items-center px-4 pb-10 pt-10">
+    <div className="relative z-10 mx-auto flex w-full max-w-md flex-col items-center px-4 pb-10 pt-6">
       <AnimatePresence mode="wait">
         {!revealed ? (
           <motion.div
@@ -66,7 +77,7 @@ export default function RevealScreen({ game }) {
               </h1>
               <p className="mt-2 text-white/60">Make sure no one else sees the card!</p>
             </div>
-            <Button className="w-full py-4 text-xl" onClick={onFlip}>
+            <Button className="w-full py-4 text-xl" onClick={openCard}>
               🃏 Reveal card
             </Button>
           </motion.div>
@@ -81,27 +92,42 @@ export default function RevealScreen({ game }) {
           >
             <div style={{ perspective: 1200 }} className="w-full">
               <motion.div
-                animate={{ rotateY: revealed ? 180 : 0 }}
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                style={{ transformStyle: 'preserve-3d' }}
+                animate={{ rotateY: flipped ? 180 : 0 }}
+                transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                style={{
+                  transformStyle: 'preserve-3d',
+                  WebkitTransformStyle: 'preserve-3d',
+                }}
                 className="no-tap-highlight relative h-[360px] w-full cursor-pointer rounded-3xl"
-                onClick={onFlip}
+                onClick={toggleFlip}
+                title="Tap to flip / hide"
               >
+                {/* Back of card (Hidden / Tap to reveal) */}
                 <div
                   className="absolute inset-0 grid place-items-center rounded-3xl border border-white/15 bg-gradient-to-br from-night-700 via-night-800 to-night-900 shadow-card"
-                  style={{ backfaceVisibility: 'hidden' }}
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'translate3d(0,0,0)',
+                  }}
                 >
-                  <div className="text-center">
+                  <div className="text-center p-6">
                     <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-white/10 font-display text-4xl font-bold text-saffron-400">
                       ?
                     </div>
                     <p className="font-display text-2xl font-bold text-white">{terms.tapToReveal}</p>
+                    <p className="mt-2 text-sm text-white/50">Word is hidden for privacy</p>
                   </div>
                 </div>
 
+                {/* Front of card (Revealed word) */}
                 <div
                   className="absolute inset-0 rounded-3xl border shadow-card"
-                  style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg) translate3d(0,0,0)',
+                  }}
                 >
                   {isImposter && !round.dark ? (
                     <div className="grid h-full w-full place-items-center rounded-3xl bg-gradient-to-br from-rose-700 via-rose-900 to-night-900 border-rose-400/30 text-center p-6">
@@ -136,7 +162,25 @@ export default function RevealScreen({ game }) {
               </motion.div>
             </div>
 
-            <Button className="mt-6 w-full py-4 text-xl" onClick={next}>
+            <button
+              onClick={toggleFlip}
+              className="mt-3 cursor-pointer text-xs font-semibold text-white/60 hover:text-white transition-colors"
+            >
+              {flipped ? '🙈 Tap card to hide secret' : '👀 Tap card to show secret'}
+            </button>
+
+            {isLast && (
+              <div className="mt-3 w-full rounded-2xl glass border border-saffron-400/40 p-3 text-center">
+                <span className="text-xs uppercase tracking-widest text-saffron-400 font-bold block mb-0.5">
+                  🗣️ First Clue Speaker
+                </span>
+                <span className="text-base font-bold text-white">
+                  {starter.name.trim() || `Player ${players.indexOf(starter) + 1}`} will start!
+                </span>
+              </div>
+            )}
+
+            <Button className="mt-4 w-full py-4 text-xl" onClick={next}>
               {isLast ? '🎯 Start the round' : `➡️ ${terms.nextPlayer}`}
             </Button>
             <div className="mt-3 flex gap-3 w-full">
